@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: message-resource
+
+
+
+  ssl:
+    bundle:
+      jks:
+        messageserver:
+          key:
+            alias: messageserver
+            password: password
+          keystore:
+            location: classpath:messageserver-identity.p12
+            password: password
+            type: PKCS12
+          truststore:
+            location: classpath:messageserver-truststore.p12
+            password: password
+            type: PKCS12
+
+
+
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: http://localhost:9000/oauth2/jwks
+
+server:
+  port: 8443
+  ssl:
+    bundle: messageserver
+
+
+
+
+
+logging:
+  level:
+    org.springframework.security: trace
+    org.springframework.security.oauth2: trace

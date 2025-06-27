@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: oauth2
+  main:
+    banner-mode: off
+
+server:
+  port: 9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+
+logging:
+  level:
+    org.springframework.security: trace
+
