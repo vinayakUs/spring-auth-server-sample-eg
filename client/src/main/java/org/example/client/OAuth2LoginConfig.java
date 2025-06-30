@@ -1,5 +1,6 @@
 package org.example.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -18,6 +19,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class OAuth2LoginConfig {
 
+    @Value("${app.auth.provider.spring-tls.issuer-uri}")
+    String tls_issuer_uri;
+
+    @Value("${app.auth.provider.spring.issuer-uri}")
+    String issuer_uri;
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -29,13 +35,13 @@ public class OAuth2LoginConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
                 .scope("openid", "profile")
-                .authorizationUri("http://localhost:9000/oauth2/authorize")
-                .tokenUri("http://localhost:9000/oauth2/token")
-                .userInfoUri("http://localhost:9000/userinfo")
-                .jwkSetUri("http://localhost:9000/oauth2/jwks")
+                .authorizationUri(issuer_uri+"/oauth2/authorize")
+                .tokenUri(issuer_uri+"/oauth2/token")
+                .userInfoUri(issuer_uri+"/userinfo")
+                .jwkSetUri(issuer_uri+"/oauth2/jwks")
                 .clientName("messaging-client-oidc")
                 .userNameAttributeName("sub")
-                .issuerUri("http://localhost:9000")
+                .issuerUri(issuer_uri)
                 .build();
 
 
@@ -46,7 +52,7 @@ public class OAuth2LoginConfig {
                 .authorizationGrantType(new AuthorizationGrantType("authorization_code"))
                 .redirectUri("http://127.0.0.1:8080/authorized")
                 .scope("message.read", "message.write")
-                .authorizationUri("http://localhost:9000/oauth2/authorize") // Replace with your auth server URL
+                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
                 .tokenUri("http://localhost:9000/oauth2/token")             // Replace with your auth server URL
                 .build();
 
@@ -57,7 +63,9 @@ public class OAuth2LoginConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/jwks").permitAll()
+                        .anyRequest().authenticated())
                 .oauth2Login(
                         oauth2Login -> oauth2Login.loginPage("/oauth2/authorization/messaging-client-oidc")
                 ).oauth2Client(withDefaults());

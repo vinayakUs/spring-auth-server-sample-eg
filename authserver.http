@@ -1,0 +1,5 @@
+GET http://localhost:9000/oauth2/authorize?
+    response_type=code&
+    client_id=messaging-client&
+    scope=openid%20profile%20message.read&
+    redirect_uri=http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc

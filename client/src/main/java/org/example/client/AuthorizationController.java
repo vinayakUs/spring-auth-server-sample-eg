@@ -44,11 +44,8 @@ public class AuthorizationController {
                 .retrieve().bodyToMono(String.class).block();
 
         redirectAttributes.addFlashAttribute("messages", messages);
-//        model.addAttribute("messages", messages);
-        return "redirect:/index";
-//
-//        String[] messages = this.de
-//
+         return "redirect:/index";
+
     }
 
 }

@@ -3,10 +3,43 @@ spring:
     name: client
   main:
     banner-mode: off
+#
+#  ssl:
+#    bundle:
+#      jks:
+#        messageserver:
+#          key:
+#            alias: "messageserver"
+#          keystore:
+#            location: "classpath:messageserver-identity.p12"
+#            password: "password"
+#            type: "PKCS12"
+#          truststore:
+#            location: "classpath:messageserver-truststore.p12"
+#            password: "password"
+#            type: "PKCS12"
+
+  ssl:
+    bundle:
+      jks:
+        demo-client:
+          key:
+            alias: "client"
+          keystore:
+            location: "classpath:client-identity.p12"
+            password: "password"
+            type: "PKCS12"
+          truststore:
+            location: "classpath:client-truststore.p12"
+            password: "password"
+            type: "PKCS12"
+
 
 server:
   port: 8080
   address: 127.0.0.1
+  ssl:
+    enabled: false
 
 
 management:
@@ -17,6 +50,15 @@ management:
   endpoint:
     health:
       show-details: always
+
+
+app:
+  auth:
+    provider:
+      spring:
+        issuer-uri: 'http://localhost:9000'
+      spring-tls:
+        issuer-uri: 'https://localhost:9443'
 
 messages:
   base-uri: http://127.0.0.1:8443/messages

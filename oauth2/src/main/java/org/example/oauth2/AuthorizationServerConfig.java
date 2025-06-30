@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -100,7 +101,27 @@ public class AuthorizationServerConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
 
-        return new InMemoryRegisteredClientRepository(registeredClient);
+        RegisteredClient mtlsDemoClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("mtls-demo-client")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.SELF_SIGNED_TLS_CLIENT_AUTH)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .scope("message.read")
+                .scope("message.write")
+                .clientSettings(
+                        ClientSettings.builder()
+                                .x509CertificateSubjectDN("CN=client,OU=Dev,O=MyOrg,L=City,ST=State,C=IN")
+                                .jwkSetUrl("http://127.0.0.1:8080/jwks")
+                                .build()
+                ).tokenSettings(
+                        TokenSettings.builder()
+                                .x509CertificateBoundAccessTokens(true)
+                                .build()
+                )
+
+                .build();
+
+        return new InMemoryRegisteredClientRepository(registeredClient,mtlsDemoClient);
     }
 
 
