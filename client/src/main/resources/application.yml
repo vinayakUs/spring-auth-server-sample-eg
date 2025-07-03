@@ -24,14 +24,10 @@ spring:
       jks:
         demo-client:
           key:
-            alias: "client"
+            alias: demo-client-sample
           keystore:
-            location: "classpath:client-identity.p12"
-            password: "password"
-            type: "PKCS12"
-          truststore:
-            location: "classpath:client-truststore.p12"
-            password: "password"
+            location: classpath:client-keystore.p12
+            password: password
             type: "PKCS12"
 
 
@@ -40,7 +36,7 @@ server:
   address: 127.0.0.1
   ssl:
     enabled: false
-
+    bundle: demo-client
 
 management:
   endpoints:

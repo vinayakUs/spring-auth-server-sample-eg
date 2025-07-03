@@ -7,25 +7,31 @@ spring:
   ssl:
     bundle:
       jks:
-        demo-authorizationserver:
-          key:
-            alias: demo-authorizationserver-sample
-            password: password
-          keystore:
-            location: classpath:keystore.p12
-            password: password
-            type: PKCS12
+        ca-signed-client:
           truststore:
-            location: classpath:keystore.p12
+            location: classpath:truststore.p12
+            password: changeit
+            type: PKCS12
+          keystore:
+            location: classpath:server-keystore.p12
             password: password
             type: PKCS12
+
 
 
 server:
   port: 9443
   ssl:
-    bundle: demo-authorizationserver
+    enabled: true
+#    key-store: classpath:server-keystore.p12
+#    key-store-password: password  # or the password you gave
+#    key-store-type: PKCS12
+#
+#    trust-store: classpath:truststore.p12
+#    trust-store-password: changeit  # or your password
+#    trust-store-type: PKCS12
     client-auth: want
+    bundle: ca-signed-client
 
 management:
   endpoints:

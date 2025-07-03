@@ -101,27 +101,44 @@ public class AuthorizationServerConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
 
-        RegisteredClient mtlsDemoClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("mtls-demo-client")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.SELF_SIGNED_TLS_CLIENT_AUTH)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("message.read")
-                .scope("message.write")
-                .clientSettings(
-                        ClientSettings.builder()
-                                .x509CertificateSubjectDN("CN=client,OU=Dev,O=MyOrg,L=City,ST=State,C=IN")
-                                .jwkSetUrl("http://127.0.0.1:8080/jwks")
-                                .build()
-                ).tokenSettings(
-                        TokenSettings.builder()
-                                .x509CertificateBoundAccessTokens(true)
-                                .build()
-                )
+        // RegisteredClient mtlsDemoClient = RegisteredClient.withId(UUID.randomUUID().toString())
+        //         .clientId("mtls-demo-client")
+        //         .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
+        //         .clientAuthenticationMethod(ClientAuthenticationMethod.SELF_SIGNED_TLS_CLIENT_AUTH)
+        //         .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+        //         .scope("message.read")
+        //         .scope("message.write")
+        //         .clientSettings(
+        //                 ClientSettings.builder()
+        //                         .x509CertificateSubjectDN("CN=client,OU=Dev,O=MyOrg,L=City,ST=State,C=IN")
+        //                         .jwkSetUrl("http://127.0.0.1:8080/jwks")
+        //                         .build()
+        //         ).tokenSettings(
+        //                 TokenSettings.builder()
+        //                         .x509CertificateBoundAccessTokens(true)
+        //                         .build()
+        //         )
 
-                .build();
+        //         .build();
+RegisteredClient mtlsClient = RegisteredClient.withId(UUID.randomUUID().toString())
+    .clientId("mtls-demo-client")
+    .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH) // ✅ only this
+    .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+    .scope("message.read")
+    .scope("message.write")
+    .clientSettings(
+        ClientSettings.builder()
+            .x509CertificateSubjectDN("CN=demo-client-sample,OU=Samples,O=Spring,C=US") // ✅ EXACT match
+            .build()
+    )
+    .tokenSettings(
+        TokenSettings.builder()
+            .x509CertificateBoundAccessTokens(true)
+            .build()
+    )
+    .build();
 
-        return new InMemoryRegisteredClientRepository(registeredClient,mtlsDemoClient);
+        return new InMemoryRegisteredClientRepository(registeredClient,mtlsClient);
     }
 
 
