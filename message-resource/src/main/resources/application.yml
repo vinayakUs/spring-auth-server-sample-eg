@@ -28,10 +28,10 @@ spring:
 
 server:
   port: 8443
-  ssl:
-    bundle: messageserver
-    client-auth: need
-    enabled: false
+#  ssl:
+#    bundle: messageserver
+#    client-auth: need
+#    enabled: false
 
 
 

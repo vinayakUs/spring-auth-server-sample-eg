@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Controller
@@ -47,5 +48,21 @@ public class AuthorizationController {
          return "redirect:/index";
 
     }
+    @GetMapping(value = "/authorize" , params = "grant_type=mtls")
+    public String clientCredentialsGrantUsingClientSecret(Model model
+            ,RedirectAttributes redirectAttributes
+
+    ){
+        String messages =  this.defaultClientWebClient
+                .get().uri(this.messagesBaseUri)
+                .attributes(clientRegistrationId("mtls-demo-client-client-credentials"))
+                .retrieve().bodyToMono(String.class).block();
+
+        redirectAttributes.addFlashAttribute("messages", messages);
+        return "redirect:/index";
+    }
+
+
+
 
 }

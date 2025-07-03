@@ -53,10 +53,20 @@ public class OAuth2LoginConfig {
                 .redirectUri("http://127.0.0.1:8080/authorized")
                 .scope("message.read", "message.write")
                 .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
-                .tokenUri("http://localhost:9000/oauth2/token")             // Replace with your auth server URL
+                .tokenUri("http://localhost:9443/oauth2/token")             // Replace with your auth server URL
                 .build();
 
-        return new InMemoryClientRegistrationRepository(messaging,messagingClient);
+        ClientRegistration mTLSMessaginClientRegistration = ClientRegistration.withRegistrationId("mtls-demo-client-client-credentials")
+                .clientId("mtls-demo-client")
+                .clientName("mtls-demo-client-client-credentials")
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
+                .scope("message.read","message.write")
+                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
+                .tokenUri("http://localhost:9443/oauth2/token")             // Replace with your auth server URL
+                .build();
+
+        return new InMemoryClientRegistrationRepository(messaging,messagingClient,mTLSMessaginClientRegistration);
     }
 
 

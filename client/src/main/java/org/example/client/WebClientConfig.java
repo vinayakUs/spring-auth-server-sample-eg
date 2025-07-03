@@ -29,9 +29,6 @@ public class WebClientConfig {
         ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
 
-
-
-
         return WebClient.builder()
                 .clientConnector(createClientConnector(sslBundles.getBundle("demo-client")))
                 .apply(oauth2Client.oauth2Configuration())
