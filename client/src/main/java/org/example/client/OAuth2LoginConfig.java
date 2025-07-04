@@ -25,49 +25,49 @@ public class OAuth2LoginConfig {
     @Value("${app.auth.provider.spring.issuer-uri}")
     String issuer_uri;
 
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        ClientRegistration messaging = ClientRegistration
-                .withRegistrationId("messaging-client-oidc")
-                .clientId("messaging-client")
-                .clientSecret("secret")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-                .scope("openid", "profile")
-                .authorizationUri(issuer_uri+"/oauth2/authorize")
-                .tokenUri(issuer_uri+"/oauth2/token")
-                .userInfoUri(issuer_uri+"/userinfo")
-                .jwkSetUri(issuer_uri+"/oauth2/jwks")
-                .clientName("messaging-client-oidc")
-                .userNameAttributeName("sub")
-                .issuerUri(issuer_uri)
-                .build();
-
-
-        ClientRegistration messagingClient = ClientRegistration.withRegistrationId("messaging-client-authorization-code")
-                .clientId("messaging-client")
-                .clientSecret("secret")
-                .clientName("messaging-client-authorization-code")
-                .authorizationGrantType(new AuthorizationGrantType("authorization_code"))
-                .redirectUri("http://127.0.0.1:8080/authorized")
-                .scope("message.read", "message.write")
-                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
-                .tokenUri("http://localhost:9443/oauth2/token")             // Replace with your auth server URL
-                .build();
-
-        ClientRegistration mTLSMessaginClientRegistration = ClientRegistration.withRegistrationId("mtls-demo-client-client-credentials")
-                .clientId("mtls-demo-client")
-                .clientName("mtls-demo-client-client-credentials")
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
-                .scope("message.read","message.write")
-                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
-                .tokenUri("http://localhost:9443/oauth2/token")             // Replace with your auth server URL
-                .build();
-
-        return new InMemoryClientRegistrationRepository(messaging,messagingClient,mTLSMessaginClientRegistration);
-    }
+//    @Bean
+//    public ClientRegistrationRepository clientRegistrationRepository() {
+//        ClientRegistration messaging = ClientRegistration
+//                .withRegistrationId("messaging-client-oidc")
+//                .clientId("messaging-client")
+//                .clientSecret("secret")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+//                .scope("openid", "profile")
+//                .authorizationUri(issuer_uri+"/oauth2/authorize")
+//                .tokenUri(issuer_uri+"/oauth2/token")
+//                .userInfoUri(issuer_uri+"/userinfo")
+//                .jwkSetUri(issuer_uri+"/oauth2/jwks")
+//                .clientName("messaging-client-oidc")
+//                .userNameAttributeName("sub")
+//                .issuerUri(issuer_uri)
+//                .build();
+//
+//
+//        ClientRegistration messagingClient = ClientRegistration.withRegistrationId("messaging-client-authorization-code")
+//                .clientId("messaging-client")
+//                .clientSecret("secret")
+//                .clientName("messaging-client-authorization-code")
+//                .authorizationGrantType(new AuthorizationGrantType("authorization_code"))
+//                .redirectUri("http://127.0.0.1:8080/authorized")
+//                .scope("message.read", "message.write")
+//                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
+//                .tokenUri("http://localhost:9000/oauth2/token")             // Replace with your auth server URL
+//                .build();
+//
+//        ClientRegistration mTLSMessaginClientRegistration = ClientRegistration.withRegistrationId("mtls-demo-client-client-credentials")
+//                .clientId("mtls-demo-client")
+//                .clientName("mtls-demo-client-client-credentials")
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.TLS_CLIENT_AUTH)
+//                .scope("message.read","message.write")
+//                .authorizationUri("https://localhost:9443/oauth2/authorize") // Replace with your auth server URL
+//                .tokenUri("http://localhost:9443/oauth2/token")             // Replace with your auth server URL
+//                .build();
+//
+//        return new InMemoryClientRegistrationRepository(messaging,messagingClient,mTLSMessaginClientRegistration);
+//    }
 
 
     @Bean
