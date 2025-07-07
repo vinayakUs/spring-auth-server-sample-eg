@@ -142,11 +142,11 @@ RegisteredClient mtlsClient = RegisteredClient.withId(UUID.randomUUID().toString
     )
     .build();
 
-
-RegisteredClient tokenExchangeClient = RegisteredClient.withId(UUID.randomUUID().toString())
-        .clientId("token-client")
-
-        .build();
+//
+//RegisteredClient tokenExchangeClient = RegisteredClient.withId(UUID.randomUUID().toString())
+//        .clientId("token-client")
+//
+//        .build();
 
         return new InMemoryRegisteredClientRepository(registeredClient,mtlsClient);
     }
