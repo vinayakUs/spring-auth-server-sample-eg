@@ -10,17 +10,18 @@ spring:
   ssl:
     bundle:
       jks:
-        messageserver:
+        message-server:
           key:
-            alias: "messageserver"
+            alias: resource-server
           keystore:
-            location: "classpath:messageserver-identity.p12"
+            location: "classpath:resource-server.p12"
             password: "password"
             type: "PKCS12"
           truststore:
-            location: "classpath:messageserver-truststore.p12"
-            password: "password"
-            type: "PKCS12"
+            location: classpath:client-truststore.p12
+            password: password
+            type: PKCS12
+
 
 
 
@@ -28,6 +29,10 @@ spring:
 
 server:
   port: 8443
+  ssl:
+    enabled: true
+    client-auth: need
+    bundle: message-server
 #  ssl:
 #    bundle: messageserver
 #    client-auth: need

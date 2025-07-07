@@ -1,5 +1,5 @@
 '''
-➜  certs git:(master) ✗ curl  -v --cert client-keystore.p12 --cert-type P12 --pass password --cacert rootCA.crt --url https://localhost:9443/oauth2/token --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=client_credentials" --data-urlencode "client_id=mtls-demo-client"
+  ➜  certs git:(master) ✗ curl  -v --cert client-keystore.p12 --cert-type P12 --pass password --cacert rootCA.crt --url https://localhost:9443/oauth2/token --header "Content-Type: application/x-www-form-urlencoded" --data-urlencode "grant_type=client_credentials" --data-urlencode "client_id=mtls-demo-client"
 *   Trying 127.0.0.1:9443...
 * TCP_NODELAY set
 * Connected to localhost (127.0.0.1) port 9443 (#0)
@@ -148,3 +148,40 @@ openssl pkcs12 -export \
 -certfile rootCA.crt \
 -name demo-server-sample \
 -passout pass:changeit
+
+
+
+
+
+
+
+
+
+
+
+openssl genrsa -out resource-server.key 2048
+
+
+
+
+--Get token of resource server using curl CLIENT SECRET BASIC AUTH
+
+curl -u messaging-client:secret \
+-X POST https://localhost:9443/oauth2/token \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "grant_type=client_credentials" \
+--cacert rootCA.crt 
+
+{"access_token":"","token_type":"Bearer","expires_in":299}#
+
+
+--Get token for resource server using MTLS
+
+curl -v --cert client-keystore.p12:password \
+--cert-type P12 \
+--cacert rootCA.crt \
+-X POST https://localhost:9443/oauth2/token \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "grant_type=client_credentials" \
+-d "client_id=mtls-demo-client" \
+-d "scope=message.read message.write"

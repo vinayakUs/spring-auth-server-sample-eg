@@ -19,11 +19,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class OAuth2LoginConfig {
 
-    @Value("${app.auth.provider.spring-tls.issuer-uri}")
-    String tls_issuer_uri;
-
-    @Value("${app.auth.provider.spring.issuer-uri}")
-    String issuer_uri;
+//    @Value("${app.auth.provider.spring-tls.issuer-uri}")
+//    String tls_issuer_uri;
+//
+//    @Value("${app.auth.provider.spring.issuer-uri}")
+//    String issuer_uri;
 
 //    @Bean
 //    public ClientRegistrationRepository clientRegistrationRepository() {

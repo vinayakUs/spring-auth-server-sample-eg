@@ -27,7 +27,7 @@ spring:
             client-id: messaging-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: 'http://127.0.0.1/login/oauth2/code/{registrationId}'
+            redirect-uri: 'http://127.0.0.1:8080/login/oauth2/code/{registrationId}'
             client-name: messaging-client-oidc
             scope:
               - profile
@@ -43,9 +43,20 @@ spring:
             scope:
               - message.read
               - message.write
+
+          mtls-demo-client-client-credentials:
+            provider: spring-tls
+            client-id: mtls-demo-client
+            client-authentication-method: tls_client_auth
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+            client-name: mtls-demo-client-client-credentials
+
         provider:
           spring:
             issuer-uri: http://localhost:9000
+          spring-tls:
+            token-uri: https://localhost:9443/oauth2/token
 
 
   ssl:
@@ -56,6 +67,10 @@ spring:
             alias: demo-client-sample
           keystore:
             location: classpath:client-keystore.p12
+            password: password
+            type: "PKCS12"
+          truststore:
+            location: classpath:client-truststore.p12
             password: password
             type: "PKCS12"
 
@@ -77,18 +92,22 @@ management:
       show-details: always
 
 
-app:
-  auth:
-    provider:
-      spring:
-        issuer-uri: 'http://localhost:9000'
-      spring-tls:
-        issuer-uri: 'https://localhost:9443'
+#app:
+#  auth:
+#    provider:
+#      spring:
+#        issuer-uri: 'http://localhost:9000'
+#      spring-tls:
+#        issuer-uri: 'https://localhost:9443'
 
 messages:
-  base-uri: http://127.0.0.1:8443/messages
+  base-uri: https://127.0.0.1:8443/messages
 
 logging:
   level:
     org.springframework.security: trace
+    reactor.netty.http.client: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+    org.springframework.web.reactive.function.client.ExchangeFilterFunction: TRACE
+    org.springframework.web.reactive.function.client.DefaultWebClient: TRACE
 
