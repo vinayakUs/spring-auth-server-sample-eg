@@ -52,6 +52,16 @@ spring:
             scope: message.read,message.write
             client-name: mtls-demo-client-client-credentials
 
+          messaging-client-client-credentials:
+            provider: spring
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+            client-name: messaging-client-client-credentials
+
+
+
         provider:
           spring:
             issuer-uri: http://localhost:9000

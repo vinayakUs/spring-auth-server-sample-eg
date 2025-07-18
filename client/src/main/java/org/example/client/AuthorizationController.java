@@ -66,5 +66,20 @@ public class AuthorizationController {
 
 
 
+    @GetMapping(value = "/authorize", params = {"grant_type=client_credentials", "client_auth=client_secret"})
+    public String clientCredentialsGrantUsingClientSecret(Model model) {
+        String[] messages = this.defaultClientWebClient
+                .get()
+                .uri(this.messagesBaseUri)
+                .attributes(ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId("messaging-client-client-credentials"))
+                .retrieve()
+                .bodyToMono(String[].class).block();
+        model.addAttribute("messages", messages);
+
+        return "index";
+    }
+
+
+
 
 }
